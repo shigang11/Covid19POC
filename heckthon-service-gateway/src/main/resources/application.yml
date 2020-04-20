@@ -1,0 +1,53 @@
+# @Author IQUBAL MUSTAFA KAKI
+server:
+ port: 8084
+spring:
+ application.name: heckthon-service-gateway
+ aop:
+   proxy-target-class: false
+eureka:
+  client:
+   service-url:
+    defaultZone: http://localhost:8761/eureka
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id}:${random.value}
+zuul:
+ routes:
+  service-orchestration:
+   path: /service-orchestration/**
+   service-id: service-orchestration
+  testcenter-service:
+   path: /testcenter-service/**
+   service-id: testcenter-service
+  user-appointment-service:
+   path: /user-appointment-service/**
+   service-id: user-appointment-service
+ ratelimit:
+  enabled: true
+  repository: JPA
+  policy-list:
+    service-orchestration:
+     - limit: 5
+       refresh-interval: 30
+       type:
+         - origin
+ strip-prefix: true
+ribbon:
+ ConnectionTimeout: 10000
+ ReadTimeout: 30000
+ eureka:
+  enabled: true
+hystrix:
+ threadpool:
+  default:
+   coresize: 1000
+   maximumSize: 10000
+   queueSizeRejectionThreshold: -1
+   maxQueueSize: -1
+  command:
+   default:
+    execution:
+     isolation:
+     strategy: THREAD
+     thread:
+      timeoutInMilliseconds: 51000			
