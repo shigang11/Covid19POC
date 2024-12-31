@@ -1,0 +1,15 @@
+pipeline{
+    agent any
+    stages{
+        stage("Git Checkout"){
+            steps{
+                git credentialsId: 'github-shigang1', url: 'https://github.com/shigang11/Covid19POC/new/master/testcenter-service'
+            }
+        }
+        stage("Maven Build"){
+            steps{
+                sh "mvn clean package"
+            }
+        }
+    }
+}
