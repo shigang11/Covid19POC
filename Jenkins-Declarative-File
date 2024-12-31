@@ -6,5 +6,10 @@ pipeline{
                 git credentialsId: 'github-shigang1', url: 'https://github.com/shigang11/Covid19POC.git'
             }
         }
+        stage("Maven Build"){
+            steps{
+                sh "mvn clean package"
+            }
+        }
     }
 }
